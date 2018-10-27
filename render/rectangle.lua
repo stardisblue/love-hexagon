@@ -1,27 +1,24 @@
-local Rectangle = require 'draw'
-Rectangle.__index = Rectangle
+Class = require 'hump.class'
+Base = require 'render.base'
+Utils = require 'render.utils'
 
-function Rectangle:newRectangle(width, height, lineWidth, duration, angle, scoped)
-  local newrect = Rectangle:newDraw(duration, angle, scoped)
-  setmetatable(newrect, Rectangle)
+local Rectangle = Class{__includes = Base}
 
-  newrect.width = width
-  newrect.height = height
+function Rectangle:init(width, height, duration)
+  Base.init(self, duration)
+  self.width = width
+  self.height = height
 
-  newrect.perimeter = 2 * width + 2 * height
+  self.perimeter = 2 * width + 2 * height
+  self.progress = {0, 0}
 
-  newrect.progress = {0, 0}
-
-  newrect.draw = function (self, x, y)
-    love.graphics.line(
-      map(function (v, i)
+  self.draw = function (self, x, y)
+    love.graphics.line(Utils.map(function (v, i)
           if i%2 == 0 then return v + x
-          else return v + y
+            else return v + y
           end
-    end, self.progress))
+        end, self.progress))
   end
-
-  return newrect
 end
 
 function Rectangle:updateProgress()
@@ -72,17 +69,9 @@ function Rectangle:updateProgress()
 end
 
 function Rectangle:goal()
-  self.draw = function (x, y)
+  self.draw = function (self, x, y)
     love.graphics.rectangle('line', x, y, self.width, self.height)
   end
-end
-
-function map(func, array)
-  local new_array = {}
-  for i,v in ipairs(array) do
-    new_array[i] = func(v, i)
-  end
-  return new_array
 end
 
 return Rectangle
