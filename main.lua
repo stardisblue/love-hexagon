@@ -1,7 +1,7 @@
-Utils = require 'render.utils'
-Draw = require 'render.base'
-Line = require 'render.line'
-Rectangle = require 'render.rectangle'
+local Utils = require 'render.utils'
+-- local Draw = require 'render.base'
+local Line = require 'render.line'
+local Rectangle = require 'render.rectangle'
 
 
 local secondLine  = Line(100, 3)
@@ -15,7 +15,7 @@ function love.load()
 
 end
 
-function love.keyreleased(key, scancode)
+function love.keyreleased(key)
   if key == 'escape' then
     love.event.quit(0)
   end
@@ -27,7 +27,7 @@ function love.update(dt)
   hourLine:update(dt)
   rect:update(dt)
 
-  rotation = (rotation +  dt) %  86400-- secondes
+  rotation = (rotation +  dt) %  86400 -- secondes
 end
 
 function love.draw()
@@ -45,17 +45,19 @@ function love.draw()
     Utils.scope("all", function()
       Utils.rotate(100, 100, math.rad(rotation / 10))
       love.graphics.setLineWidth(3)
-      minutesLine:draw(100, 100)
+      secondLine:draw(100, 100)
     end)
 
     Utils.scope("all", function()
       Utils.rotate(100, 100, math.rad(rotation / 240))
       love.graphics.setLineWidth(5)
-      hourLine:draw(100, 100)
+      secondLine:draw(100, 100)
     end)
   end)
 
-  rect:draw(300, 300)
+  rect:draw(20, 300)
+
+  rect:draw(300, 200)
 
   love.graphics.ellipse('line', 100, 100, 100, 100 )
 end

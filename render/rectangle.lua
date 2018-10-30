@@ -14,8 +14,8 @@ function Rectangle:init(width, height, duration)
 
   self.draw = function (self, x, y)
     love.graphics.line(Utils.map(function (v, i)
-          if i%2 == 0 then return v + x
-            else return v + y
+          if i%2 == 0 then return v + y
+            else return v + x
           end
         end, self.progress))
   end
